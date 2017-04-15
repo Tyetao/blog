@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-app.use(express.static('./client'));
+// app.use(express.static('./client'));
 
 
 // var routes = require('./server/routes/routes.js')(app);//路由API
