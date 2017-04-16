@@ -12,9 +12,22 @@
             </object>
             <ul class="clearfix">
                 <li>
-                    <router-link :to="{name:'technicalNotes'}" title="技术笔记">技术笔记</router-link>
+                    <router-link 
+                        @click.native="getArticle($event)" 
+                        :to="{name:'technicalNotes'}" 
+                        title="技术笔记"
+                        id="100">技术笔记
+                    </router-link>
                 </li>
-                <li><a href="javascript:;" title="慢生活">慢生活</a></li>
+                <li>
+                    <!-- <a href="javascript:;" title="慢生活">慢生活</a> -->
+                    <router-link 
+                        @click.native="getArticle($event)" 
+                        :to="{name:'technicalNotes'}" 
+                        title="慢生活"
+                        id="0">慢生活
+                    </router-link>
+                </li>
                 <li><a href="javascript:;" title="文章归档">文章归档</a></li>
             </ul>
         </div>
@@ -22,13 +35,24 @@
 </template>
 
 <script>
+import { commonEmit } from '../../assets/js/common'
 export default {
-  name: 'nav',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+    name: 'nav',
+    data () {
+        return {
+        msg: 'Welcome to Your Vue.js App'
+        }
+    },
+    methods: {
+        getArticle(event) {
+            let query = event.target.id;
+            sessionStorage.setItem('query',query);
+            commonEmit.$emit('getArticle',query);
+        }
+    },
+    created() {
+        sessionStorage.setItem('query',100);
     }
-  }
 }
 </script>
 

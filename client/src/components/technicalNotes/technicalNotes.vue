@@ -1,55 +1,96 @@
 <template>
     <div>
-        <div class="technicalNotes">
-            <h2><a href="/">女孩都有浪漫的小情怀</a></h2>
-            <p class="datetime">2013-5-20</p>
-            <img class="cover" src="./2011713195450617.jpg">
-            <span class="dsc">女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。对于求婚更是抱着满满的浪漫期待，</span>
+        <div v-for="item in jsonData" class="technicalNotes">
+            <h2><a href="/">{{item.articleName}}</a></h2>
+            <p class="datetime">{{item.create}}</p>
+            <img class="cover" :src="url+item.imgUrl">
+            <span class="dsc">{{item.articleDes}}</span>
             <p class="read">
                 <!-- <a href="/">阅读>></a> -->
                 <router-link :to="{name:'articleDatile',params:{id:1}}">阅读>></router-link>
             </p>
         </div>
-        <div class="technicalNotes">
-            <h2><a href="/">女孩都有浪漫的小情怀</a></h2>
-            <p class="datetime">2013-5-20</p>
-            <img class="cover" src="./2011713195450617.jpg">
-            <span class="dsc">女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。对于求婚更是抱着满满的浪漫期待，</span>
-            <p class="read"><a href="/">阅读>></a></p>
-        </div>
-        <div class="technicalNotes">
-            <h2><a href="/">女孩都有浪漫的小情怀</a></h2>
-            <p class="datetime">2013-5-20</p>
-            <img class="cover" src="./2011713195450617.jpg">
-            <span class="dsc">女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。对于求婚更是抱着满满的浪漫期待，</span>
-            <p class="read"><a href="/">阅读>></a></p>
-        </div>
         <div class="page">
-            <a href="javascript:;" class="prve page_a">上一页</a>
+            <a @click="prve()" href="javascript:;" class="prve page_a">上一页</a>
             <ul class="clearfix">
-                <li>
-                    <a href="javascript:;" class="page_a">1</a>
-                </li>
-                <li>
-                    <a href="javascript:;" class="page_a">2</a>
-                </li>
-                <li>
-                    <a href="javascript:;" class="page_a">3</a>
+                <li v-for="n in totalPage">
+                    <a 
+                        @click="changePage(n)" 
+                        :class="{'page_a':true,'current': n == showPage}">{{n}}</a>
                 </li>
             </ul>
-            <a href="javascript:;" class="next page_a">下一页</a>
+            <a @click="next()" href="javascript:;" class="next page_a">下一页</a>
         </div>
     </div>
 </template>
 
 <script>
+import { commonEmit } from '../../assets/js/common'
+let url = 'http://localhost:3006/';
 export default {
-  name: 'technicalNotes',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+    name: 'technicalNotes',
+    data () {
+        return {
+            jsonData: '',
+            count: 2,
+            page: 1,
+            url: 'http://localhost:9090/static/',
+            image:'',
+            totalPage: '',
+            showPage: 1,
+            query:''
+        }   
+    },
+    methods: {
+        initDate(query) {
+            console.log(this.page);
+            if (query == 0 || query == 100) {
+                this.page = 1;
+            }
+            let jsonParmas = {
+                "count": this.count,
+                "page": this.page,
+                "query": query
+            }
+
+            this.$http.post(url + 'list',jsonParmas).then( res => {
+                console.log(res.body)
+                let jsonData = res.body;
+                if (jsonData.error_code == "Y10000") {
+                    this.jsonData = jsonData.datas;
+                    this.totalPage = Math.ceil(jsonData.totalCount/this.count)
+                }
+            }, errs => {
+                console.log(errs)
+            })
+        },
+        prve() {
+            if (this.page == 1) {
+                return;
+            }
+            this.page --;
+            this.showPage = this.page;
+            this.initDate(this.query)
+        },
+        next() {
+            if (this.page == this.totalPage) {
+                return;
+            }
+            this.page ++;
+            this.showPage = this.page;
+            this.initDate(this.query)
+        },
+        changePage (n){
+            this.page = n;
+            this.showPage = n;
+            this.initDate(this.query)
+        }
+    },
+    created() {
+        this.query = sessionStorage.getItem('query');
+        this.initDate(this.query);
+        commonEmit.$on('getArticle',this.initDate)
     }
-  }
 }
 </script>
 
@@ -142,7 +183,12 @@ span.dsc::after {
     text-align: center;
     line-height: 26px;
     color: #F60;
-    transition: all .6s
+    transition: all .6s;
+    cursor: pointer;
+}
+.page .current {
+    background: #F60;
+    color: #fff
 }
 .page .page_a:hover{
     background: #F60;
