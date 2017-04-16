@@ -1,0 +1,42 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+i{
+    font-style: normal;
+}
+/* 清除浮动 */
+
+.clearfix:after {
+    display: block;
+    clear: both;
+    content: "";
+    visibility: hidden;
+    height: 0
+}
+
+.clearfix {
+    zoom: 1
+}
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #fa7d5d;
+  border-radius: 4px;
+}
+body {
+    font-size: 12px;
+    background: #80C7DB url(../imgs/90304_top.jpg) 50% -60px scroll no-repeat;
+    color: #5d5d5d;
+}
+

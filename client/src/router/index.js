@@ -1,15 +1,25 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
+import TechnicalNotes from '@/components/technicalNotes/technicalNotes'
+import ArticleDatile from '@/components/technicalNotes/articleDatile'
 
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'Hello',
-      component: Hello
-    }
-  ]
+    mode:'history',
+    routes: [
+        {
+          path: '/',
+          name: 'technicalNotes',
+          component: TechnicalNotes
+        },{
+            path: '/articleDatile/:id',
+            name: 'articleDatile',
+            component: ArticleDatile
+        },{
+            path: '/technicalNotes',
+            name: 'technicalNotes',
+            component: TechnicalNotes
+        }
+    ]
 })

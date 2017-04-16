@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var db = require('./config/config.js');
 var bodyParser = require('body-parser'); //处理请求体数据
 var cookieParser = require('cookie-parser');
 
@@ -19,7 +20,7 @@ app.use(bodyParser.json());
 // app.use(express.static('./client'));
 
 
-// var routes = require('./server/routes/routes.js')(app);//路由API
+var routes = require('./server/routes/routes.js')(app);//路由API
 
 var server = app.listen(3006, function() {
     var host = server.address().address;
