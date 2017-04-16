@@ -25,7 +25,7 @@
             <p class="read"><a href="/">阅读>></a></p>
         </div>
         <div class="page">
-            <a href="javascript:;" class="prve page_a"><</a>
+            <a href="javascript:;" class="prve page_a">上一页</a>
             <ul class="clearfix">
                 <li>
                     <a href="javascript:;" class="page_a">1</a>
@@ -37,7 +37,7 @@
                     <a href="javascript:;" class="page_a">3</a>
                 </li>
             </ul>
-            <a href="javascript:;" class="next page_a">></a>
+            <a href="javascript:;" class="next page_a">下一页</a>
         </div>
     </div>
 </template>
@@ -121,7 +121,8 @@ span.dsc::after {
 }
 .page {
     position: relative;
-    height: 40px;
+    height: 60px;
+    margin-top: 30px
 }
 .page ul{
     position: absolute;
@@ -151,10 +152,14 @@ span.dsc::after {
     position: absolute;
     left: 0;
     top: 0;
+    width: 80px;
+    border-radius: 30px
 }
 .page .next{
     position: absolute;
     right: 0;
     top: 0;
+    width: 80px;
+    border-radius: 30px
 }
 </style>

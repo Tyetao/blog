@@ -10,8 +10,7 @@ export default new Router({
     routes: [
         {
           path: '/',
-          name: 'technicalNotes',
-          component: TechnicalNotes
+          redirect: 'technicalNotes',
         },{
             path: '/articleDatile/:id',
             name: 'articleDatile',

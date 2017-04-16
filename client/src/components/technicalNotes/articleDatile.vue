@@ -4,15 +4,15 @@
         <div class="title">
             <span>
                 <label>发布时间：</label>
-                <a href="javascript:;">date}}</a>
+                <a href="javascript:;">date</a>
             </span>
             <span>
                 <label>作者：</label>
-                <a href="javascript:;">articleObj.articleAuthor}}</a>
+                <a href="javascript:;">articleObj.articleAuthor</a>
             </span>
             <span>
                 <label>来源：</label>
-                <a href="javascript:;">articleObj.articleLink}}</a>   
+                <a href="javascript:;">articleObj.articleLink</a>   
             </span>
             <span>
                 <label>阅读：</label>
@@ -73,6 +73,9 @@ export default {
     .articleDatile .title{
         text-align: center;
     }
+    .articleDatile .title span a{
+        color: #999
+    }
     .articleDatile .content{
         margin: 20px 0 0 0;
         line-height: 20px
@@ -80,11 +83,13 @@ export default {
     .contentPrve{
         margin-top: 10px;
         cursor: pointer;
+        color: #999
     }
     .contentNext{
         margin-bottom: 20px;
         margin-top: 6px;
         cursor: pointer;
+        color: #999
     }
     .contentNext:hover,.contentPrve:hover{
         text-decoration: underline;
