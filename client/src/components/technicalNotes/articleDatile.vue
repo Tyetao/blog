@@ -20,32 +20,38 @@
             </span>
         </div>
         <div class="content">
-            {{obj.content}}
+            <article v-html="obj.content" class="markdown-body">
+            </article>
         </div>
-        <p class="contentPrve">上一篇   最浪漫的求婚词</p>
-        <p class="contentNext">下一篇   最浪漫的求婚词</p>
+        <p class="contentPrve">上一篇 
+            <span  v-if="obj1" @click="initData(obj1._id)" >  
+                {{obj1.articleName}}
+            </span>
+            <span  v-if="!obj1">  
+                到顶了
+            </span>
+        </p>
+        <p class="contentNext">下一篇  
+            <span  v-if="obj2" @click="initData(obj2._id)" >   
+                {{obj2.articleName}}
+            </span>
+            <span  v-if="!obj2">  
+                到底了
+            </span>
+        </p>
         <div class="comment">
             <p class="p">欢迎评论:</p>
-            <div class="clearfix">
+            <div v-for="item in comments" class="clearfix">
                 <img class="img" src="./2011713195450617.jpg" width="50" height="50" alt="">
                 <div class="comment_right">
-                    <span class="name">tyetao</span>
-                    <span class="time">2017-4-16</span>
-                    <p> 孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词</p>
+                    <span class="name">{{item.from}}</span>
+                    <span class="time">{{item.meta.createAt | formatDate}}</span>
+                    <p> {{item.content}}</p>
                 </div>
                 <button class="replay">回复</button>
             </div>
-            <div class="clearfix">
-                <img class="img" src="./2011713195450617.jpg" width="50" height="50" alt="">
-                <div class="comment_right">
-                    <span class="name"><i>tyetao</i> 回复 <i>tyetao</i></span>
-                    <span class="time">2017-4-16</span>
-                    <p> 孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词</p>
-                </div>
-                <button class="replay">回复</button>
-            </div>
-            <textarea class="textarea"></textarea>
-            <button class="replay" style="margin-bottom:10px"> 提交</button>
+            <textarea class="textarea" v-model="comment.content"></textarea>
+            <button @click="saveComment()" class="replay" style="margin-bottom:10px"> 提交</button>
         </div>
     </div>
 </template>
@@ -57,26 +63,45 @@ export default {
     name: 'articleDatile',
     data () {
         return {
-            obj: ''
+            obj: '',
+            obj1: '',
+            obj2: '',
+            comment: {
+                article: '',
+                from: '58ee38a2ed16a10482801f33',
+                content: ''
+            },
+            comments: ''
         }
     },
     methods: {
-        initData() {
-            console.log(this.$route)
-            let id = this.$route.params.id;
+        initData(id) {
             this.$http.post(url + 'articleDatile', {id:id}).then(res => {
-                console.log(res.body)
-                let obj = res.body
+                console.log(res.body.datas)
+                let obj = res.body;
                 if (obj.error_code == "Y10000") {
-                    this.obj = obj.datas;
+                    this.obj = obj.datas.article;
+                    this.obj1 = obj.datas.prveArticle[0];
+                    this.obj2 = obj.datas.nextArticle[0];
+                    this.comments = obj.datas.comments;
                 }
+            }, err => {
+                console.log(err)
+            })
+        },
+        saveComment() {
+            let jsonParams = JSON.stringify(this.comment)
+            this.$http.post(url + 'commentSave', {comment:jsonParams}).then(res => {
+                console.log(res.body)
             }, err => {
                 console.log(err)
             })
         }
     },
     created() {
-        this.initData()
+        let id = this.$route.params.id;
+        this.comment.article = id;
+        this.initData(id)
     },
     filters: {
         formatDate(time) {
@@ -109,16 +134,21 @@ export default {
     .contentPrve{
         margin-top: 10px;
         cursor: pointer;
-        color: #999
+        color: #999;
     }
     .contentNext{
         margin-bottom: 20px;
         margin-top: 6px;
         cursor: pointer;
-        color: #999
+        color: #999;
     }
-    .contentNext:hover,.contentPrve:hover{
+    .contentNext span,.contentPrve span{
+        margin-left: 20px;
+        display: inline-block;
+    }
+    .contentNext span:hover,.contentPrve span:hover{
         text-decoration: underline;
+        color: #000
     }
     .comment .p{
         margin-bottom: 20px

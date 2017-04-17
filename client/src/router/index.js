@@ -19,6 +19,10 @@ export default new Router({
             path: '/technicalNotes',
             name: 'technicalNotes',
             component: TechnicalNotes
+        },{
+            path: '/life',
+            name: 'life',
+            component: TechnicalNotes
         }
     ]
 })

@@ -22,7 +22,7 @@
                 <li>
                     <router-link 
                         @click.native="getArticle($event)" 
-                        :to="{name:'technicalNotes'}" 
+                        :to="{name:'life'}" 
                         title="慢生活"
                         id="0">慢生活
                     </router-link>
@@ -106,12 +106,12 @@ export default {
     font-weight: bold;
     border-radius: 40px 0;
 }
-/*.nav ul li a.router-link-active{
-    background: #e15782;
-    color: #FFF;
-    font-weight: bold;
-    border-radius: 40px 0;
-}*/
+.nav ul li a.router-link-active{
+    /*background: #e15782;*/
+    color: #e15782;
+    font-weight: bold;/*
+    border-radius: 40px 0*/;
+}
 .nav ul li a#nav_current {
     font-weight: bold;
 }
