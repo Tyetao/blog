@@ -20,7 +20,6 @@
                     </router-link>
                 </li>
                 <li>
-                    <!-- <a href="javascript:;" title="慢生活">慢生活</a> -->
                     <router-link 
                         @click.native="getArticle($event)" 
                         :to="{name:'technicalNotes'}" 
@@ -40,18 +39,26 @@ export default {
     name: 'nav',
     data () {
         return {
-        msg: 'Welcome to Your Vue.js App'
+            msg: 'Welcome to Your Vue.js App'
         }
     },
     methods: {
         getArticle(event) {
             let query = event.target.id;
-            sessionStorage.setItem('query',query);
-            commonEmit.$emit('getArticle',query);
+            let sessionQuery = {
+                "query":query,
+                "page":1
+            }
+            sessionStorage.setItem('sessionQuery',JSON.stringify(sessionQuery));
+            commonEmit.$emit('getArticle',query,1);
         }
     },
     created() {
-        sessionStorage.setItem('query',100);
+        let sessionQuery = {
+            "query":100,
+            "page":1
+        }
+        sessionStorage.setItem('sessionQuery',JSON.stringify(sessionQuery));
     }
 }
 </script>

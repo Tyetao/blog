@@ -1,26 +1,26 @@
 <template>
     <div class="articleDatile">
-        <h3>打扫房间爱神的箭发</h3>
+        <h3>{{obj.articleName}}</h3>
         <div class="title">
             <span>
                 <label>发布时间：</label>
-                <a href="javascript:;">date</a>
+                <a href="javascript:;">{{obj.create | formatDate}}</a>
             </span>
             <span>
                 <label>作者：</label>
-                <a href="javascript:;">articleObj.articleAuthor</a>
+                <a href="javascript:;">{{obj.articleAuthor}}</a>
             </span>
             <span>
                 <label>来源：</label>
-                <a href="javascript:;">articleObj.articleLink</a>   
+                <a href="javascript:;">{{obj.articleLink}}</a>   
             </span>
             <span>
                 <label>阅读：</label>
-                <a href="javascript:;">999999</a>   
+                <a href="javascript:;">{{obj.clickRate}}次</a>   
             </span>
         </div>
         <div class="content">
-            孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。女孩子都有着浪漫的小情怀，对于求婚更是抱着满满的浪漫期待，也希望在求婚那一天对方可以给自己一个最浪漫的求婚词。对于求婚更是抱着满满的浪漫期待，
+            {{obj.content}}
         </div>
         <p class="contentPrve">上一篇   最浪漫的求婚词</p>
         <p class="contentNext">下一篇   最浪漫的求婚词</p>
@@ -51,13 +51,39 @@
 </template>
 
 <script>
+let url = 'http://localhost:3006/';
+import { formatDate } from '../../assets/js/date';
 export default {
-  name: 'articleDatile',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+    name: 'articleDatile',
+    data () {
+        return {
+            obj: ''
+        }
+    },
+    methods: {
+        initData() {
+            console.log(this.$route)
+            let id = this.$route.params.id;
+            this.$http.post(url + 'articleDatile', {id:id}).then(res => {
+                console.log(res.body)
+                let obj = res.body
+                if (obj.error_code == "Y10000") {
+                    this.obj = obj.datas;
+                }
+            }, err => {
+                console.log(err)
+            })
+        }
+    },
+    created() {
+        this.initData()
+    },
+    filters: {
+        formatDate(time) {
+            let date = new Date(time);
+            return formatDate(date, 'yyyy-MM-dd hh:mm');
+        }
     }
-  }
 }
 </script>
 

@@ -18,9 +18,8 @@ exports.list = function(req, res, next) {
         query = { $gt: "0" };
     }
 
-
     Article
-        .find({"articleType":query},function(err, counts) {
+        .find({ "articleType": query }, function(err, counts) {
             if (err) {
                 res.json({
                     error_code: "Y99999",
@@ -28,16 +27,13 @@ exports.list = function(req, res, next) {
                     msg: "查询失败"
                 })
             }
-            console.log('--------------',counts.length)
             Article
-                .find({"articleType":query})
+                .find({ "articleType": query })
                 .skip(rows)
                 .limit(count)
                 .sort('-create')
                 .exec(function(err, data) {
-                    console.log(data);
                     if (err) {
-                        console.log(err);
                         res.json({
                             error_code: "Y99999",
                             datas: err,
@@ -51,23 +47,25 @@ exports.list = function(req, res, next) {
                         totalCount: counts.length,
                         msg: "查询成功"
                     })
-
                 })
         })
-
 };
 
 //文章详情
 exports.articleDatile = function(req, res, next) {
     var id = req.body.id;
-
+    
     if (id) {
         var query = Article.where({ _id: id });
-
+        // query.find({"create":{$lt:ISODate("2017-04-17T01:15:37.638Z")}})
+        console.log('---------------',query)
         query.findOne(function(err, data) {
             if (err) {
-                console.log(err);
-                return;
+                res.json({
+                    error_code: "Y99999",
+                    datas: err,
+                    msg: "查询失败"
+                })
             }
 
             if (data) {

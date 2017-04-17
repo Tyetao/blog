@@ -2,12 +2,12 @@
     <div>
         <div v-for="item in jsonData" class="technicalNotes">
             <h2><a href="/">{{item.articleName}}</a></h2>
-            <p class="datetime">{{item.create}}</p>
+            <p class="datetime">{{item.create | formatDate}}</p>
             <img class="cover" :src="url+item.imgUrl">
             <span class="dsc">{{item.articleDes}}</span>
             <p class="read">
                 <!-- <a href="/">阅读>></a> -->
-                <router-link :to="{name:'articleDatile',params:{id:1}}">阅读>></router-link>
+                <router-link :to="{name:'articleDatile',params:{id:item._id}}">阅读>></router-link>
             </p>
         </div>
         <div class="page">
@@ -25,14 +25,15 @@
 </template>
 
 <script>
-import { commonEmit } from '../../assets/js/common'
+import { commonEmit } from '../../assets/js/common';
+import {formatDate} from '../../assets/js/date';
 let url = 'http://localhost:3006/';
 export default {
     name: 'technicalNotes',
     data () {
         return {
             jsonData: '',
-            count: 2,
+            count: 3,
             page: 1,
             url: 'http://localhost:9090/static/',
             image:'',
@@ -42,19 +43,16 @@ export default {
         }   
     },
     methods: {
-        initDate(query) {
-            console.log(this.page);
-            if (query == 0 || query == 100) {
-                this.page = 1;
-            }
+        initDate(query,page) {
+            this.showPage = page;
+
             let jsonParmas = {
                 "count": this.count,
-                "page": this.page,
+                "page": page,
                 "query": query
             }
 
             this.$http.post(url + 'list',jsonParmas).then( res => {
-                console.log(res.body)
                 let jsonData = res.body;
                 if (jsonData.error_code == "Y10000") {
                     this.jsonData = jsonData.datas;
@@ -70,7 +68,7 @@ export default {
             }
             this.page --;
             this.showPage = this.page;
-            this.initDate(this.query)
+            this.initDate(this.query.query,this.page)
         },
         next() {
             if (this.page == this.totalPage) {
@@ -78,18 +76,25 @@ export default {
             }
             this.page ++;
             this.showPage = this.page;
-            this.initDate(this.query)
+            this.initDate(this.query.query,this.page)
         },
         changePage (n){
             this.page = n;
             this.showPage = n;
-            this.initDate(this.query)
+            this.initDate(this.query.query,this.page)
         }
     },
     created() {
-        this.query = sessionStorage.getItem('query');
-        this.initDate(this.query);
+        this.query = JSON.parse(sessionStorage.getItem('sessionQuery'));
+        this.page = this.query.page;
+        this.initDate(this.query.query,this.page);
         commonEmit.$on('getArticle',this.initDate)
+    },
+    filters: {
+        formatDate(time) {
+            let date = new Date(time);
+            return formatDate(date, 'yyyy-MM-dd hh:mm');
+        }
     }
 }
 </script>
