@@ -1,13 +1,13 @@
+
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema
-var ObjectId = Schema.Types.ObjectId
 
-var CommentSchema = new mongoose.Schema({
-    article: { type: ObjectId, ref: 'Article' },
-    from: { type: ObjectId, ref: 'User' },
+var CommentSchema = new Schema({
+    article: { type: Schema.Types.ObjectId, ref: 'article' },
+    from: { type: Schema.Types.ObjectId, ref: 'user' },
     // reply: [{
-    //     from: { type: ObjectId, ref: 'User' },
-    //     to: { type: ObjectId, ref: 'User' },
+    //     from: { type: Schema.Types.ObjectId, ref: 'User' },
+    //     to: { type: Schema.Types.ObjectId, ref: 'User' },
     //     content: String
     // }],
     content: String,

@@ -44,13 +44,14 @@
             <div v-for="item in comments" class="clearfix">
                 <img class="img" src="./2011713195450617.jpg" width="50" height="50" alt="">
                 <div class="comment_right">
-                    <span class="name">{{item.from}}</span>
+                    <span class="name">{{item.from.userName}}</span>
                     <span class="time">{{item.meta.createAt | formatDate}}</span>
                     <p> {{item.content}}</p>
                 </div>
                 <button class="replay">回复</button>
             </div>
-            <textarea class="textarea" v-model="comment.content"></textarea>
+            <textarea class="textarea" v-model="comment.content">
+            </textarea>
             <button @click="saveComment()" class="replay" style="margin-bottom:10px"> 提交</button>
         </div>
     </div>
@@ -68,7 +69,7 @@ export default {
             obj2: '',
             comment: {
                 article: '',
-                from: '58ee38a2ed16a10482801f33',
+                from: '58e59fe2de739714b8825454',
                 content: ''
             },
             comments: ''
@@ -92,7 +93,11 @@ export default {
         saveComment() {
             let jsonParams = JSON.stringify(this.comment)
             this.$http.post(url + 'commentSave', {comment:jsonParams}).then(res => {
-                console.log(res.body)
+                let obj = res.body;
+                if (obj.error_code == "Y10000") {
+                    this.initData(obj.datas.article)
+                    this.comment.content = ''
+                }
             }, err => {
                 console.log(err)
             })
