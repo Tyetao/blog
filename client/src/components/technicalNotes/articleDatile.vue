@@ -41,18 +41,36 @@
         </p>
         <div class="comment">
             <p class="p">欢迎评论:</p>
-            <div v-for="item in comments" class="clearfix">
-                <img class="img" src="./2011713195450617.jpg" width="50" height="50" alt="">
-                <div class="comment_right">
-                    <span class="name">{{item.from.userName}}</span>
-                    <span class="time">{{item.meta.createAt | formatDate}}</span>
-                    <p> {{item.content}}</p>
+            <div v-for="item in comments" class="item clearfix">
+                <div class="clearfix">
+                    <img class="img" src="./2011713195450617.jpg" width="50" height="50" alt="">
+                    <div class="comment_right">
+                        <span class="name">{{item.from}}</span>
+                        <span class="time">{{item.meta.createAt | formatDate}}</span>
+                        <p> {{item.content}}</p>
+                    </div>
                 </div>
-                <button class="replay">回复</button>
+                <div class="clearfix">
+                    <button class="replay">回复</button>
+                </div>
+                <div style="width:660px;margin-left:60px" class="clearfix">
+                    <div class="clearfix">
+                        <img class="img" src="./2011713195450617.jpg" width="50" height="50" alt="">
+                        <div style="width:600px" class="comment_right">
+                            <span class="name">1211&nbsp;&nbsp;回复&nbsp;&nbsp;啊实打实的</span>
+                            <span class="time">121122</span>
+                            <p>啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的</p>
+                        </div>
+                    </div>
+                    <div style="height:24px">
+                        <button class="replay">回复</button>
+                    </div>
+                </div>
             </div>
+        </div>
             <textarea class="textarea" v-model="comment.content">
-            </textarea>
-            <button @click="saveComment()" class="replay" style="margin-bottom:10px"> 提交</button>
+            </textarea> 
+            <button @click="saveComment()" class="replay" style="margin:10px 0"> 提交</button>
         </div>
     </div>
 </template>
@@ -69,7 +87,7 @@ export default {
             obj2: '',
             comment: {
                 article: '',
-                from: '58e59fe2de739714b8825454',
+                from: '58ee38a2ed16a10482801f33',
                 content: ''
             },
             comments: ''
@@ -155,8 +173,19 @@ export default {
         text-decoration: underline;
         color: #000
     }
+    .comment .item{
+        border-bottom: 1px solid #ccc;
+        padding: 10px 0;
+
+    }
+    .comment .item img {
+        border-radius: 50%;
+    }
     .comment .p{
-        margin-bottom: 20px
+        margin-bottom: 20px;
+        color: #000;
+        font-weight: bold;
+        font-size: 14px;
     }
     .comment .img{
         float: left;
@@ -177,12 +206,17 @@ export default {
     .replay{
         width: 40px;
         height: 24px;
-        background: #fff;
+        background: #F60;
         float: right;
         border-radius: 3px;
         border: none;
-        margin-top: 10px;
         cursor: pointer;
+        color: #fff
+    }
+    .replay:hover{
+        background: #fff;
+        color: #f60;
+        border: 1px solid #ccc
     }
     .textarea{
         width: 100%;

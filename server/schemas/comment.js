@@ -5,11 +5,11 @@ var Schema = mongoose.Schema
 var CommentSchema = new Schema({
     article: { type: Schema.Types.ObjectId, ref: 'article' },
     from: { type: Schema.Types.ObjectId, ref: 'user' },
-    // reply: [{
-    //     from: { type: Schema.Types.ObjectId, ref: 'User' },
-    //     to: { type: Schema.Types.ObjectId, ref: 'User' },
-    //     content: String
-    // }],
+    reply: [{
+        from: { type: Schema.Types.ObjectId, ref: 'user' },
+        to: { type: Schema.Types.ObjectId, ref: 'user' },
+        content: String
+    }],
     content: String,
     meta: {
         createAt: {

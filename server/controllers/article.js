@@ -91,7 +91,6 @@ exports.articleDatile = function(req, res, next) {
                                 .find({article:id})
                                 .populate('from','userName')
                                 .exec(function(err, comments){
-                                    console.log('comments'+comments)
                                     if (err) {
                                         res.json({
                                             error_code: "Y99999",
