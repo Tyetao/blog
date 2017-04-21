@@ -45,13 +45,13 @@
                 <div class="clearfix">
                     <img class="img" src="./2011713195450617.jpg" width="50" height="50" alt="">
                     <div class="comment_right">
-                        <span class="name">{{item.from}}</span>
+                        <span v-if="item.from" class="name">{{item.from.userName}}</span>
                         <span class="time">{{item.meta.createAt | formatDate}}</span>
                         <p> {{item.content}}</p>
                     </div>
                 </div>
                 <div class="clearfix">
-                    <button class="replay">回复</button>
+                    <button :cid="item.from._id" @click="replay($event)" class="replay">回复</button>
                 </div>
                 <div style="width:660px;margin-left:60px" class="clearfix">
                     <div class="clearfix">
@@ -87,7 +87,7 @@ export default {
             obj2: '',
             comment: {
                 article: '',
-                from: '58ee38a2ed16a10482801f33',
+                from: '58f6b8cf295b57130a722674',
                 content: ''
             },
             comments: ''
@@ -119,6 +119,11 @@ export default {
             }, err => {
                 console.log(err)
             })
+        },
+        replay(event){
+            // this.fromCommentId = '58e59fe2de739714b8825454';
+            // this.toCommentId = '58f6b8cf295b57130a722674';
+            console.log(event.target.getAttribute('cid'));
         }
     },
     created() {

@@ -64,7 +64,7 @@ exports.articleDatile = function(req, res, next) {
                     msg: "查询详情失败"
                 })
             }
-            
+
             Article
                 .find({ "create": { $lt: data.create } })
                 .limit(1)
@@ -88,9 +88,9 @@ exports.articleDatile = function(req, res, next) {
                                 })
                             }
                             Comment
-                                .find({article:id})
-                                .populate('from','userName')
-                                .exec(function(err, comments){
+                                .find({ article: id })
+                                .populate('from', 'userName')
+                                .exec(function(err, comments) {
                                     if (err) {
                                         res.json({
                                             error_code: "Y99999",
@@ -98,6 +98,7 @@ exports.articleDatile = function(req, res, next) {
                                             msg: "查询评论失败"
                                         })
                                     }
+
                                     res.json({
                                         error_code: "Y10000",
                                         datas: {
