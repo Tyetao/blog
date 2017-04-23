@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // app.use(express.static('./client'));
+
 /*跨域访问*/
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");  

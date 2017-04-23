@@ -7,10 +7,13 @@ var multipartMiddleware = multipart();
 
 module.exports = function(app){
 
-	app.post('/list',Article.list); //文章列表
-	app.post('/articleDatile',Article.articleDatile); //文章详情
+	app.post('/api/list',Article.list); //文章列表
+	app.post('/api/articleDatile',Article.articleDatile); //文章详情
+	app.get('/api/recentArticle', Article.recentArticle);//近期文章
+	app.get('/api/articleClassify', Article.articleClassify);//文章分类
 
-	app.post('/commentSave',Comment.commentSave);
+	app.post('/api/commentSave',Comment.commentSave); //保存评论
 
-	app.post('/addUser',User.addUser)
+	app.post('/api/signin',User.signin) //登录
+	app.post('/api/signup',User.signup) //注册
 }

@@ -106,12 +106,12 @@ export default {
     font-weight: bold;
     border-radius: 40px 0;
 }
-.nav ul li a.router-link-active{
+/*.nav ul li a.router-link-active{*/
     /*background: #e15782;*/
-    color: #e15782;
-    font-weight: bold;/*
-    border-radius: 40px 0*/;
-}
+    /*color: #e15782;*/
+    /*font-weight: bold;*/
+    /*border-radius: 40px 0;*/
+/*}*/
 .nav ul li a#nav_current {
     font-weight: bold;
 }

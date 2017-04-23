@@ -1,31 +1,39 @@
 <template>
     <aside>
         <h2>技术笔记分类</h2>
-        <ul>
-            <li><a href="/">ÂýÉú»î(3)</a></li>
-            <li><a href="/">³ÌÐòÈËÉú(25)</a></li>
-            <li><a href="/">¾­µäÃÀÎÄ(39)</a></li>
+        <ul v-if="obj2 && obj2.length>0">
+            <li v-for="item in obj2">
+                <!-- <a href="/">{{item.articleName}}({{item.length}})</a> -->
+                <router-link 
+                        @click.native="getArticle($event)" 
+                        :to="{name:'technicalNotes'}" 
+                        :id="item.articleType">
+                        {{item.articleName}}({{item.length}})
+                    </router-link>
+            </li>
         </ul>
         <h2>近期文章</h2>
-        <ul>
-            <li><a href="/">Å®º¢¶¼ÓÐÀËÂþµÄÐ¡Çé»³</a></li>
-            <li><a href="/">Ò²ÐíÏÂ¸öÂ·¿Ú¾Í»áÓö¼ûÏ£Íû</a></li>
-            <li><a href="/">6ÔÂ±ÏÒµ¼¾£¬×£¸£ËÍ¸øÄã</a></li>
-            <li><a href="/">Éú»î³£ÓÐÈ±Ï¯µÄ-¿É¸ãÐ¦´ÓÀ´²»È±Ï¯</a></li>
-            <li><a href="/">ÎªÁËÒ»¸ö²»´æÔÚµÄÃÎ£¬Ö´ÄîÁËÄÇÃ´¶àÄê</a></li>
-            <li><a href="/">ÃÃÃÃ£¬Ã÷ÌìÄã¾ÍÒª¼ÞÈËÀ²</a></li>
+        <ul v-if="obj && obj.length>0">
+            <li v-for="item in obj">
+                <router-link
+                    @click.native="goArticleDatile()" 
+                    tag="a" 
+                    :to="{name:'articleDatile',params:{id:item._id}}">
+                    {{item.articleName}}
+                </router-link>
+            </li>
         </ul>
         <h2>阅读最多</h2>
         <ul>
-            <li><a href="/">2008 ÄêÈýÔÂ</a></li>
-            <li><a href="/">2008 ÄêËÄÔÂ</a></li>
-            <li><a href="/">2008 ÄêÁùÔÂ</a></li>
+            <li><a href="/">2008 ass</a></li>
+            <li><a href="/">2008 ss</a></li>
+            <li><a href="/">2008 ss</a></li>
         </ul>
         <h2>友情链接</h2>
         <ul>
-            <li><a href="/">ÑîÇà¸öÈË²©¿Í</a></li>
-            <li><a href="/">°Ù¶È</a></li>
-            <li><a href="/">Google</a></li>
+            <li><a href="/">谭业涛个人博客</a></li>
+            <li><a target="_blank" href="https://github.com/Tyetao">github地址</a></li>
+            <li><a target="_blank" href="https://Baidu.com">Baidu</a></li>
         </ul>
         <!-- Baidu Button BEGIN -->
         <div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare share">
@@ -39,13 +47,55 @@
 </template>
 
 <script>
+import { commonEmit } from '../../assets/js/common';
+let url = 'http://localhost:3006/';
 export default {
-  name: 'aside',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+    name: 'aside',
+    data () {
+        return {
+            obj: '',
+            obj2: ''
+        }
+    },
+    methods: {
+        articleClassify() {
+            this.$http.get(url+'api/articleClassify').then( res => {
+                let obj = res.body;
+                console.log(obj)
+                if (obj.error_code == "Y10000") {
+                    this.obj2 = obj.datas;
+                }
+            },err =>{    
+                alert('查询文章分类失败')
+            })
+        },
+        recentArticle(){
+            this.$http.get(url+'api/recentArticle').then( res => {
+                let obj = res.body;
+                if (obj.error_code == "Y10000") {
+                    this.obj = obj.datas;
+                }
+            },err =>{    
+                alert('查询最近文章失败')
+            })
+        },
+        goArticleDatile(){
+            this.$router.go(0)
+        },
+        getArticle(event) {
+            let query = event.target.id;
+            let sessionQuery = {
+                "query":query,
+                "page":1
+            }
+            sessionStorage.setItem('sessionQuery',JSON.stringify(sessionQuery));
+            commonEmit.$emit('getArticle',query,1);
+        }
+    },
+    created(){
+        this.recentArticle();
+        this.articleClassify();
     }
-  }
 }
 </script>
 

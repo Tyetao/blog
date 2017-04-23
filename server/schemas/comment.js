@@ -1,4 +1,3 @@
-
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 
@@ -8,7 +7,8 @@ var CommentSchema = new Schema({
     reply: [{
         from: { type: Schema.Types.ObjectId, ref: 'user' },
         to: { type: Schema.Types.ObjectId, ref: 'user' },
-        content: String
+        content: String,
+        createAt: Date
     }],
     content: String,
     meta: {
@@ -25,9 +25,9 @@ var CommentSchema = new Schema({
 
 CommentSchema.pre('save', function(next) {
     if (this.isNew) {
-        this.meta.createAt = this.meta.updateAt = Date.now()
+        this.meta.createAt = this.meta.updateAt = Date.now();
     } else {
-        this.meta.updateAt = Date.now()
+        this.meta.updateAt = Date.now();
     }
 
     next()

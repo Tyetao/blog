@@ -4,10 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
+import $ from 'jquery'
 
 import './assets/css/main.css'
 import 'animate.css'
-import 'github-markdown-css'
 
 Vue.use(VueResource)
 

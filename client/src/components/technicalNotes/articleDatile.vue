@@ -20,57 +20,85 @@
             </span>
         </div>
         <div class="content">
-            <article v-html="obj.content" class="markdown-body">
+            <article v-html="obj.content">
             </article>
         </div>
-        <p class="contentPrve">上一篇 
-            <span  v-if="obj1" @click="initData(obj1._id)" >  
+        <p class="contentPrve">上一篇
+            <router-link v-if="obj1" 
+                tag="span" 
+                :to="{name:'articleDatile',params:{id:obj1._id}}"   
+                @click.native="initData(obj1._id)" >  
                 {{obj1.articleName}}
-            </span>
+            </router-link>
             <span  v-if="!obj1">  
                 到顶了
             </span>
         </p>
         <p class="contentNext">下一篇  
-            <span  v-if="obj2" @click="initData(obj2._id)" >   
+            <router-link 
+                v-if="obj2"
+                tag="span" 
+                :to="{name:'articleDatile',params:{id:obj2._id}}"   @click.native="initData(obj2._id)" >   
                 {{obj2.articleName}}
-            </span>
+            </router-link>
             <span  v-if="!obj2">  
                 到底了
             </span>
         </p>
         <div class="comment">
             <p class="p">欢迎评论:</p>
-            <div v-for="item in comments" class="item clearfix">
+            <div v-if="obj3 && obj3.length>0" v-for="item in obj3" class="item clearfix">
                 <div class="clearfix">
                     <img class="img" src="./2011713195450617.jpg" width="50" height="50" alt="">
                     <div class="comment_right">
                         <span v-if="item.from" class="name">{{item.from.userName}}</span>
                         <span class="time">{{item.meta.createAt | formatDate}}</span>
-                        <p> {{item.content}}</p>
+                    <button 
+                        :cid="item._id" 
+                        :tid="item.from._id" 
+                        @click="replay($event)" class="replay">回复</button>
+                        <p v-html="item.content"></p>
+                        <div class="textarea twotextarea">
+                                <span style="color:#ccc">
+                                    回复 {{item.from.userName}}:
+                                </span>
+                                <textarea placeholder="欢迎吐槽..." v-model="comment.content"></textarea>
+                                <button  @click="onEditorBlur()" class="replay" style="margin:10px 0;margin-left:10px; float:right">取消</button>
+                                <button @click="saveComment()" class="replay" style="margin:10px 0;float:right"> 提交</button>
+                            </div>
                     </div>
                 </div>
-                <div class="clearfix">
-                    <button :cid="item.from._id" @click="replay($event)" class="replay">回复</button>
-                </div>
-                <div style="width:660px;margin-left:60px" class="clearfix">
+                
+                <div v-if="item.reply && item.reply.length > 0" v-for="(replyItem, index) in item.reply" style="width:660px;margin-left:60px;margin-top:20px" class="clearfix">
                     <div class="clearfix">
                         <img class="img" src="./2011713195450617.jpg" width="50" height="50" alt="">
                         <div style="width:600px" class="comment_right">
-                            <span class="name">1211&nbsp;&nbsp;回复&nbsp;&nbsp;啊实打实的</span>
-                            <span class="time">121122</span>
-                            <p>啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的啊实打实的</p>
+                            <span class="name">{{replyItem.from.userName}}&nbsp;&nbsp;回复&nbsp;&nbsp;{{replyItem.to.userName}}</span>
+                            <span class="time">{{replyItem.createAt | formatDate}}</span>
+                            <button 
+                                :cid="item._id" 
+                                :tid="replyItem.from._id" 
+                                @click="replay($event,index)"
+                                class="replay">回复
+                            </button>
+                            <p v-html="replyItem.content"></p>
+                            <div class="textarea twotextarea">
+                                <span style="color:#ccc">
+                                    回复 {{replyItem.from.userName}}:
+                                </span>
+                                <textarea placeholder="欢迎吐槽..." v-model="comment.content"></textarea>
+                                <button  @click="onEditorBlur()" class="replay" style="margin:10px 0;margin-left:10px; float:right">取消</button>
+                                <button @click="saveComment()" class="replay" style="margin:10px 0;float:right"> 提交</button>
+                            </div>
                         </div>
-                    </div>
-                    <div style="height:24px">
-                        <button class="replay">回复</button>
                     </div>
                 </div>
             </div>
         </div>
-            <textarea class="textarea" v-model="comment.content">
-            </textarea> 
-            <button @click="saveComment()" class="replay" style="margin:10px 0"> 提交</button>
+        <div class="textarea onetextarea">
+            <textarea placeholder="欢迎吐槽..." v-model="comment.content"></textarea>
+            <button @click="saveComment()" class="replay" style="margin:10px 0;float:right"> 提交</button>
+        </div>
         </div>
     </div>
 </template>
@@ -82,66 +110,114 @@ export default {
     name: 'articleDatile',
     data () {
         return {
-            obj: '',
-            obj1: '',
-            obj2: '',
+            userName1: '',
+            userName2: '',
+            userId1: '',
+            userId2: '',
+            userId: '',
+            obj: '',//当前文章内容
+            obj1: '',//上篇文章内容
+            obj2: '',//下篇文章内容
             comment: {
-                article: '',
-                from: '58f6b8cf295b57130a722674',
-                content: ''
+                article: '',//当前文章id
+                from: '',//当前评论人的id
+                content: '',
+                tid:'',//回复给谁的id
+                cid:''//主评论id
             },
-            comments: ''
+            obj3: '',//评论的内容
+            showReply: ''
         }
     },
     methods: {
+        //获取路由id
+        initArticleId(){
+            let id = this.$route.params.id;
+            this.comment.article = id;
+        },
+        //文章详细
         initData(id) {
-            this.$http.post(url + 'articleDatile', {id:id}).then(res => {
-                console.log(res.body.datas)
+            let articleId = id || this.comment.article;
+            this.$http.post(url + 'api/articleDatile', {id:articleId}).then(res => {
                 let obj = res.body;
+                console.log('文章详细',obj)
                 if (obj.error_code == "Y10000") {
                     this.obj = obj.datas.article;
                     this.obj1 = obj.datas.prveArticle[0];
                     this.obj2 = obj.datas.nextArticle[0];
-                    this.comments = obj.datas.comments;
+                    this.obj3 = obj.datas.comments;
                 }
             }, err => {
-                console.log(err)
+                alert('查询文章失败');
             })
         },
+        //提交评论
         saveComment() {
+            if (!this.userName1 && !this.userName2) {
+                alert('请登录后评论');
+                return;
+            }
+            if (this.comment.content == '') {
+                alert('评论内容不能为空');
+                return;
+            }
+            this.initArticleId();
+
+            this.comment.from = this.userId1 || this.userId2;
             let jsonParams = JSON.stringify(this.comment)
-            this.$http.post(url + 'commentSave', {comment:jsonParams}).then(res => {
+            this.$http.post(url + 'api/commentSave', {comment:jsonParams}).then(res => {
                 let obj = res.body;
                 if (obj.error_code == "Y10000") {
-                    this.initData(obj.datas.article)
-                    this.comment.content = ''
+                    this.initData(obj.datas.article);
+                    this.comment.tid = '';
+                    this.comment.cid = '';
+                    this.comment.content = '';
+                    $('.twotextarea').hide();
+                    $('.onetextarea').show();
                 }
             }, err => {
                 console.log(err)
             })
         },
-        replay(event){
-            // this.fromCommentId = '58e59fe2de739714b8825454';
-            // this.toCommentId = '58f6b8cf295b57130a722674';
-            console.log(event.target.getAttribute('cid'));
+        //回复评论
+        replay(event,index){
+            let cid = event.target.getAttribute('cid');
+            let tid = event.target.getAttribute('tid');
+            this.comment.tid = tid;
+            this.comment.cid = cid;
+            $('.textarea').hide();
+            event.srcElement.parentNode.children[4].style.display = 'block';
+            $('textarea').focus()
+        },
+        //取消回复
+        onEditorBlur(){
+            this.comment.tid = '';
+            this.comment.cid = '';
+            $('.twotextarea').hide();
+            $('.onetextarea').show();
         }
     },
     created() {
-        let id = this.$route.params.id;
-        this.comment.article = id;
-        this.initData(id)
+        this.initArticleId();
+        this.initData();
+
+        this.userName1 = localStorage.getItem('userName');
+        this.userName2 = sessionStorage.getItem('userName');
+        this.userId1 = localStorage.getItem('userId');
+        this.userId2 = sessionStorage.getItem('userId');
     },
     filters: {
         formatDate(time) {
             let date = new Date(time);
-            return formatDate(date, 'yyyy-MM-dd hh:mm');
+            return formatDate(date, 'yyyy-MM-dd hh:mm:ss');
         }
     }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
+
     .articleDatile {
         padding: 20px 0;
     }
@@ -180,12 +256,12 @@ export default {
     }
     .comment .item{
         border-bottom: 1px solid #ccc;
-        padding: 10px 0;
+        padding: 20px 0;
 
     }
-    .comment .item img {
+    /*.comment .item img {
         border-radius: 50%;
-    }
+    }*/
     .comment .p{
         margin-bottom: 20px;
         color: #000;
@@ -206,17 +282,21 @@ export default {
     }
     .comment_right .name,.comment_right .time{
         display: inline-block;
-        height: 20px;
+        height: 24px;
+        line-height: 24px;
+    }
+    .comment_right p{
+        margin-top: 10px;
     }
     .replay{
         width: 40px;
         height: 24px;
         background: #F60;
-        float: right;
+        margin-left: 20px;
         border-radius: 3px;
         border: none;
         cursor: pointer;
-        color: #fff
+        color: #fff;
     }
     .replay:hover{
         background: #fff;
@@ -225,9 +305,24 @@ export default {
     }
     .textarea{
         width: 100%;
-        height: 60px;
+        height: 70px;
         margin-top: 20px;
         padding: 6px;
+        box-sizing: border-box;
+        background: #fff;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+    .twotextarea{
+        display: none;
+    }
+    .textarea textarea{
+        vertical-align: text-top;
+        height: 60px;
+        width: 100%;
+        background: none;
+        border: none;
+        resize: none;
         box-sizing: border-box;
     }
 </style>

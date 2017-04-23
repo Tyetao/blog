@@ -6,23 +6,21 @@ import ArticleDatile from '@/components/technicalNotes/articleDatile'
 Vue.use(Router)
 
 export default new Router({
-    mode:'history',
-    routes: [
-        {
-          path: '/',
-          redirect: 'technicalNotes',
-        },{
-            path: '/articleDatile/:id',
-            name: 'articleDatile',
-            component: ArticleDatile
-        },{
-            path: '/technicalNotes',
-            name: 'technicalNotes',
-            component: TechnicalNotes
-        },{
-            path: '/life',
-            name: 'life',
-            component: TechnicalNotes
-        }
-    ]
+    mode: 'history',
+    routes: [{
+        path: '/',
+        redirect: 'technicalNotes',
+    }, {
+        path: '/articleDatile/:id',
+        name: 'articleDatile',
+        component: ArticleDatile
+    }, {
+        path: '/technicalNotes',
+        name: 'technicalNotes',
+        component: TechnicalNotes
+    }, {
+        path: '/life',
+        name: 'life',
+        component: TechnicalNotes
+    }]
 })

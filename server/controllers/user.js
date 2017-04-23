@@ -1,35 +1,24 @@
 var mongoose = require('mongoose');
 var User = require('../models/user.js');
 
-//新增账号
-exports.addUser = function(req, res) {
-    var reqBody = req.body;
+//注册
+exports.signup = function(req, res) {
+    var signup = req.body.signup;
 
-    if (!reqBody.userName || !reqBody.password) {
-        res.json({
-            error_code: "Y10001",
-            data: null,
-            msg: "用户名或密码不能为空"
-        })
-        return;
-    }
-
-    var query = User.where({ userName: reqBody.userName });
-
-    query.findOne(function(err, data) {
+    console.log(signup.userName)
+    User.findOne({ userName: signup.userName }, function(err, user) {
         if (err) {
             console.log(err);
             return;
         }
-
-        if (data) {
+        if (user) {
             res.json({
                 error_code: "Y10001",
-                data: null,
-                msg: data.userName + "用户名已存在"
+                data: "失败",
+                msg: "用户名已存在"
             })
         } else {
-            var _user = new User(reqBody);
+            var _user = new User(signup);
             _user.save(function(err, data) {
                 if (err) {
                     console.log(err);
@@ -38,51 +27,12 @@ exports.addUser = function(req, res) {
                 res.json({
                     error_code: "Y10000",
                     data: "ok",
-                    msg: "添加成功"
+                    msg: "注册成功"
                 })
             })
         }
-    });
-};
-//账号列表
-exports.getUserList = function(req, res) {
-    User.find(function(err, datas) {
-        if (err) {
-            res.json({
-                error_code: 'Y99999',
-                data: err,
-                msg: '查询失败'
-            })
-        }
-
-        res.json({
-            error_code: 'Y10000',
-            data: datas,
-            msg: '查询成功'
-        })
     })
 };
-//删除账号
-exports.removeUser = function(req, res) {
-    var id = req.body.id;
-    if (id) {
-        User.remove({_id: id}, function(err, datas){
-            if (err) {
-                res.json({
-                    error_code: "Y10001",
-                    data: err,
-                    msg: "删除失败"
-                })
-            }
-
-            res.json({
-                error_code: "Y10000",
-                data: datas,
-                msg: "删除成功"
-            })
-        })
-    }
-}
 //登录
 exports.signin = function(req, res) {
     var reqBody = req.body;
@@ -100,15 +50,18 @@ exports.signin = function(req, res) {
 
     query.findOne(function(err, data) {
         if (err) {
-            console.log(err);
-            return;
+            res.json({
+                error_code: "Y10001",
+                data: null,
+                msg: "户名不存在"
+            })
         }
 
         if (data) {
             if (data.userName == reqBody.userName && data.password == reqBody.password) {
                 res.json({
                     error_code: "Y10000",
-                    datas: data.userName,
+                    datas: {"userName":data.userName,"userId":data._id},
                     msg: "登录成功"
                 })
             } else {

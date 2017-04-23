@@ -52,7 +52,7 @@ export default {
                 "query": query
             }
 
-            this.$http.post(url + 'list',jsonParmas).then( res => {
+            this.$http.post(url + 'api/list',jsonParmas).then( res => {
                 let jsonData = res.body;
                 if (jsonData.error_code == "Y10000") {
                     this.jsonData = jsonData.datas;
