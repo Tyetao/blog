@@ -131,7 +131,7 @@
 			}
 		},
 		created(){
-			let userName = localStorage.setItem('userName');
+			let userName = localStorage.getItem('userName');
 			if (userName) {
 				this.signin.remember = true;
 			}
@@ -141,15 +141,15 @@
 
 <style scoped>
 .modal-mask{
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, .8);
-  display: table;
-  transition: opacity .5s ease;
+  	position: fixed;
+  	z-index: 9998;
+  	top: 0;
+  	left: 0;
+  	width: 100%;
+  	height: 100%;
+  	background-color: rgba(0, 0, 0, .8);
+  	display: table;
+  	transition: opacity .5s ease;
 }
 .login-wrap{
 	width:540px;
@@ -181,12 +181,9 @@
 	right:0;
 	bottom:0;
 	position:absolute;
-	-webkit-transform:rotateY(180deg);
-	        transform:rotateY(180deg);
-	-webkit-backface-visibility:hidden;
-	        backface-visibility:hidden;
-	-webkit-transition:all .4s linear;
-	        transition:all .4s linear;
+	transform:rotateY(180deg);
+	backface-visibility:hidden;
+	transition:all .4s linear;
 }
 .login-html .sign-in,
 .login-html .sign-up,
@@ -214,10 +211,8 @@
 .login-form{
 	min-height:345px;
 	position:relative;
-	-webkit-perspective:1000px;
-	        perspective:1000px;
-	-webkit-transform-style:preserve-3d;
-	        transform-style:preserve-3d;
+	perspective:1000px;
+	transform-style:preserve-3d;
 }
 .login-form .group{
 	margin-bottom:15px;
@@ -266,23 +261,18 @@
 	height:2px;
 	background:#fff;
 	position:absolute;
-	-webkit-transition:all .2s ease-in-out 0s;
-	        transition:all .2s ease-in-out 0s;
+	transition:all .2s ease-in-out 0s;
 }
 .login-form .group label .icon:before{
 	left:3px;
 	width:5px;
 	bottom:6px;
-	-webkit-transform:scale(0) rotate(0);
-	    -ms-transform:scale(0) rotate(0);
-	        transform:scale(0) rotate(0);
+	transform:scale(0) rotate(0);
 }
 .login-form .group label .icon:after{
 	top:6px;
 	right:0;
-	-webkit-transform:scale(0) rotate(0);
-	    -ms-transform:scale(0) rotate(0);
-	        transform:scale(0) rotate(0);
+	transform:scale(0) rotate(0);
 }
 .login-form .group .check:checked + label{
 	color:#fff;
@@ -298,24 +288,16 @@
 	background:#80C7DB;
 }
 .login-form .group .check:checked + label .icon:before{
-	-webkit-transform:scale(1) rotate(45deg);
-	    -ms-transform:scale(1) rotate(45deg);
-	        transform:scale(1) rotate(45deg);
+	transform:scale(1) rotate(45deg);
 }
 .login-form .group .check:checked + label .icon:after{
-	-webkit-transform:scale(1) rotate(-45deg);
-	    -ms-transform:scale(1) rotate(-45deg);
-	        transform:scale(1) rotate(-45deg);
+	transform:scale(1) rotate(-45deg);
 }
 .login-html .sign-in:checked + .tab + .sign-up + .tab + .login-form .sign-in-htm{
-	-webkit-transform:rotate(0);
-	    -ms-transform:rotate(0);
-	        transform:rotate(0);
+	transform:rotate(0);
 }
 .login-html .sign-up:checked + .tab + .login-form .sign-up-htm{
-	-webkit-transform:rotate(0);
-	    -ms-transform:rotate(0);
-	        transform:rotate(0);
+	transform:rotate(0);
 }
 
 .hr{
@@ -327,15 +309,15 @@
 	text-align:center;
 }
 .modal-enter{
-  opacity: 0
+  	opacity: 0
 }
 
 .modal-leave-active{
-  opacity: 0
+  	opacity: 0
 }
 
 .modal-enter .login-wrap,
 .modal-leave-active .login-wrap{
-  transform: scale(1.1)
+  	transform: scale(1.1)
 }	
 </style>

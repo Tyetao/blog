@@ -10,7 +10,8 @@ module.exports = function(app){
 	app.post('/api/list',Article.list); //文章列表
 	app.post('/api/articleDatile',Article.articleDatile); //文章详情
 	app.get('/api/recentArticle', Article.recentArticle);//近期文章
-	app.get('/api/articleClassify', Article.articleClassify);//文章分类
+    app.get('/api/articleClassify', Article.articleClassify);//文章分类
+	app.get('/api/clickRate', Article.clickRate);//点击率
 
 	app.post('/api/commentSave',Comment.commentSave); //保存评论
 

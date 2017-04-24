@@ -49,7 +49,8 @@
             <p class="p">欢迎评论:</p>
             <div v-if="obj3 && obj3.length>0" v-for="item in obj3" class="item clearfix">
                 <div class="clearfix">
-                    <img class="img" src="./2011713195450617.jpg" width="50" height="50" alt="">
+                    <img v-if="item.imgUrl.imgUrl" class="img" :src="url+item.imgUrl.imgUrl" width="50" height="50" alt="">
+                    <img  v-if="!item.imgUrl.imgUrl" class="img" src="./2011713195450617.jpg" width="50" height="50" alt="">
                     <div class="comment_right">
                         <span v-if="item.from" class="name">{{item.from.userName}}</span>
                         <span class="time">{{item.meta.createAt | formatDate}}</span>
@@ -71,7 +72,8 @@
                 
                 <div v-if="item.reply && item.reply.length > 0" v-for="(replyItem, index) in item.reply" style="width:660px;margin-left:60px;margin-top:20px" class="clearfix">
                     <div class="clearfix">
-                        <img class="img" src="./2011713195450617.jpg" width="50" height="50" alt="">
+                        <img v-if="replyItem.imgUrl.imgUrl" class="img" :src="url+replyItem.imgUrl.imgUrl" width="50" height="50" alt="">
+                        <img  v-if="!replyItem.imgUrl.imgUrl" class="img" src="./2011713195450617.jpg" width="50" height="50" alt="">
                         <div style="width:600px" class="comment_right">
                             <span class="name">{{replyItem.from.userName}}&nbsp;&nbsp;回复&nbsp;&nbsp;{{replyItem.to.userName}}</span>
                             <span class="time">{{replyItem.createAt | formatDate}}</span>
@@ -110,6 +112,7 @@ export default {
     name: 'articleDatile',
     data () {
         return {
+            url:'http://localhost:9090/static/',
             userName1: '',
             userName2: '',
             userId1: '',
@@ -119,6 +122,7 @@ export default {
             obj1: '',//上篇文章内容
             obj2: '',//下篇文章内容
             comment: {
+                imgUrl: '',
                 article: '',//当前文章id
                 from: '',//当前评论人的id
                 content: '',
@@ -164,6 +168,8 @@ export default {
             this.initArticleId();
 
             this.comment.from = this.userId1 || this.userId2;
+            this.comment.imgUrl = this.userId1 || this.userId2;
+            console.log(this.comment.imgUrl)
             let jsonParams = JSON.stringify(this.comment)
             this.$http.post(url + 'api/commentSave', {comment:jsonParams}).then(res => {
                 let obj = res.body;
@@ -270,6 +276,8 @@ export default {
     }
     .comment .img{
         float: left;
+        border: 1px solid #666;
+        border-radius: 50%;
     }
     .comment .comment_right{
         float: right;

@@ -69,8 +69,9 @@ exports.articleDatile = function(req, res, next) {
                     datas: err,
                     msg: "查询详情失败"
                 })
+                return;
             }
-
+            console.log('-----------------------------------',data)
             Article
                 .find({ "create": { $lt: data.create } })
                 .limit(1)
@@ -81,6 +82,7 @@ exports.articleDatile = function(req, res, next) {
                             datas: err,
                             msg: "查询上一篇失败"
                         })
+                        return;
                     }
                     Article
                         .find({ "create": { $gt: data.create } })
@@ -92,11 +94,14 @@ exports.articleDatile = function(req, res, next) {
                                     datas: err,
                                     msg: "查询下一篇失败"
                                 })
+                                return;
                             }
                             Comment
                                 .find({ article: id })
                                 .populate('from', 'userName')
                                 .populate('reply.from reply.to', 'userName')
+                                .populate('imgUrl','imgUrl')
+                                .populate('reply.imgUrl', 'imgUrl')
                                 .exec(function(err, comments) {
                                     if (err) {
                                         res.json({
@@ -104,6 +109,7 @@ exports.articleDatile = function(req, res, next) {
                                             datas: err,
                                             msg: "查询评论失败"
                                         })
+                                        return;
                                     }
 
                                     res.json({
@@ -128,7 +134,7 @@ exports.recentArticle = function(req, res, next) {
     Article
         .find({})
         .skip(0)
-        .limit(4)
+        .limit(5)
         .sort('-create')
         .exec(function(err, data) {
             if (err) {
@@ -137,6 +143,7 @@ exports.recentArticle = function(req, res, next) {
                     datas: err,
                     msg: "查询失败"
                 })
+                return;
             }
 
             res.json({
@@ -252,5 +259,31 @@ exports.articleClassify = function(req, res, next) {
                     msg: "查询分类成功"
                 })
             }
+        })
+}
+
+//点击率
+exports.clickRate = function(req, res, next) {
+    Article
+        .find({})
+        .skip(0)
+        .limit(5)
+        .sort('-clickRate')
+        .exec(function(err, data) {
+            if (err) {
+                res.json({
+                    error_code: "Y99999",
+                    datas: err,
+                    msg: "查询失败"
+                })
+                return;
+            }
+
+            res.json({
+                error_code: "Y10000",
+                datas: data,
+                totalCount: data.length,
+                msg: "查询成功"
+            })
         })
 }

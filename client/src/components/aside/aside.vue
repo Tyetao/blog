@@ -23,11 +23,16 @@
                 </router-link>
             </li>
         </ul>
-        <h2>阅读最多</h2>
+        <h2>点击排行</h2>
         <ul>
-            <li><a href="/">2008 ass</a></li>
-            <li><a href="/">2008 ss</a></li>
-            <li><a href="/">2008 ss</a></li>
+            <li v-for="item in obj1">
+                <router-link
+                    @click.native="goArticleDatile()" 
+                    tag="a" 
+                    :to="{name:'articleDatile',params:{id:item._id}}">
+                    {{item.articleName}}
+                </router-link>
+            </li>
         </ul>
         <h2>友情链接</h2>
         <ul>
@@ -54,6 +59,7 @@ export default {
     data () {
         return {
             obj: '',
+            obj1: '',
             obj2: ''
         }
     },
@@ -90,11 +96,22 @@ export default {
             }
             sessionStorage.setItem('sessionQuery',JSON.stringify(sessionQuery));
             commonEmit.$emit('getArticle',query,1);
+        },
+        getClickRate() {
+            this.$http.get(url+'api/clickRate').then( res => {
+                let obj = res.body;
+                if (obj.error_code == "Y10000") {
+                    this.obj1 = obj.datas;
+                }
+            },err =>{    
+                alert('查询点击率文章失败')
+            })
         }
     },
     created(){
         this.recentArticle();
         this.articleClassify();
+        this.getClickRate();
     }
 }
 </script>

@@ -8,6 +8,7 @@ exports.commentSave = function(req, res) {
         console.log(_comment.cid)
         Comment.findById(_comment.cid, function(err, comment) {
             var reply = {
+                imgUrl: _comment.imgUrl,
                 from: _comment.from,
                 to: _comment.tid,
                 content: _comment.content,

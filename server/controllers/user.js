@@ -55,6 +55,7 @@ exports.signin = function(req, res) {
                 data: null,
                 msg: "户名不存在"
             })
+            return;
         }
 
         if (data) {

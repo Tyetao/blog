@@ -2,9 +2,11 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 
 var CommentSchema = new Schema({
+    imgUrl: { type: Schema.Types.ObjectId, ref: 'user' },
     article: { type: Schema.Types.ObjectId, ref: 'article' },
     from: { type: Schema.Types.ObjectId, ref: 'user' },
     reply: [{
+        imgUrl: { type: Schema.Types.ObjectId, ref: 'user' },
         from: { type: Schema.Types.ObjectId, ref: 'user' },
         to: { type: Schema.Types.ObjectId, ref: 'user' },
         content: String,

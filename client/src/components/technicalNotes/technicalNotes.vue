@@ -1,12 +1,11 @@
 <template>
     <div>
         <div v-for="item in jsonData" class="technicalNotes">
-            <h2><a href="/">{{item.articleName}}</a></h2>
+            <h2><router-link tag="a" :to="{name:'articleDatile',params:{id:item._id}}">{{item.articleName}}</router-link></h2>
             <p class="datetime">{{item.create | formatDate}}</p>
             <img class="cover" :src="url+item.imgUrl">
             <span class="dsc">{{item.articleDes}}</span>
             <p class="read">
-                <!-- <a href="/">阅读>></a> -->
                 <router-link :to="{name:'articleDatile',params:{id:item._id}}">阅读>></router-link>
             </p>
         </div>
@@ -16,7 +15,8 @@
                 <li v-for="n in totalPage">
                     <a 
                         @click="changePage(n)" 
-                        :class="{'page_a':true,'current': n == showPage}">{{n}}</a>
+                        :class="{'page_a':true,'current': n == showPage}">{{n}}
+                    </a>
                 </li>
             </ul>
             <a @click="next()" href="javascript:;" class="next page_a">下一页</a>
@@ -26,7 +26,7 @@
 
 <script>
 import { commonEmit } from '../../assets/js/common';
-import {formatDate} from '../../assets/js/date';
+import { formatDate } from '../../assets/js/date';
 let url = 'http://localhost:3006/';
 export default {
     name: 'technicalNotes',
@@ -121,7 +121,8 @@ export default {
 img.cover {
     width: 250px;
     float: left;
-    margin-right: 10px
+    margin-right: 10px;
+    height: 165px
 }
 
 span.dsc {

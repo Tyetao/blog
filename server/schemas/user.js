@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var SALT_WORK_FACTOR = 10
 var userSchema = new Schema({
+    imgUrl: String,
     userName: {
         unqiue: true,
         type: String
