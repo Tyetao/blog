@@ -3,7 +3,7 @@
         <div v-for="item in jsonData" class="technicalNotes">
             <h2><router-link tag="a" :to="{name:'articleDatile',params:{id:item._id}}">{{item.articleName}}</router-link></h2>
             <p class="datetime">{{item.create | formatDate}}</p>
-            <img class="cover" :src="url+item.imgUrl">
+            <img class="cover" :src="urlImg+item.imgUrl">
             <span class="dsc">{{item.articleDes}}</span>
             <p class="read">
                 <router-link :to="{name:'articleDatile',params:{id:item._id}}">阅读>></router-link>
@@ -27,7 +27,6 @@
 <script>
 import { commonEmit } from '../../assets/js/common';
 import { formatDate } from '../../assets/js/date';
-let url = 'http://localhost:3006/';
 export default {
     name: 'technicalNotes',
     data () {
@@ -35,7 +34,8 @@ export default {
             jsonData: '',
             count: 3,
             page: 1,
-            url: 'http://localhost:9090/static/',
+            url: '',
+            urlImg: '',
             image:'',
             totalPage: '',
             showPage: 1,
@@ -52,7 +52,7 @@ export default {
                 "query": query
             }
 
-            this.$http.post(url + 'api/list',jsonParmas).then( res => {
+            this.$http.post(this.url + 'api/list',jsonParmas).then( res => {
                 let jsonData = res.body;
                 if (jsonData.error_code == "Y10000") {
                     this.jsonData = jsonData.datas;
@@ -85,6 +85,9 @@ export default {
         }
     },
     created() {
+        this.url = this.global_url.global_url;
+        this.urlImg = this.global_url.global_url_img + 'static/';
+
         this.query = JSON.parse(sessionStorage.getItem('sessionQuery'));
         this.page = this.query.page;
         this.initDate(this.query.query,this.page);

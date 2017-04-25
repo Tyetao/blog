@@ -1,5 +1,5 @@
 var mongoose = require('mongoose'),
-    DB_URL = 'mongodb://localhost:27017/up1994';
+    DB_URL = 'mongodb://127.0.0.1:27017/up1994';
 
 /**
  * 连接

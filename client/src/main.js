@@ -8,11 +8,12 @@ import $ from 'jquery'
 
 import './assets/css/main.css'
 import 'animate.css'
+import Global_ from './assets/js/global.js'
 
 Vue.use(VueResource)
 
-Vue.config.productionTip = false
-
+Vue.config.productionTip = false;
+Vue.prototype.global_url = Global_;
 // router.beforeEach(function() {
 //     window.scrollTo(0, 0);
 // })

@@ -1,6 +1,6 @@
 <template>
     <div class="articleDatile">
-        <h3>{{obj.articleName}}</h3>
+        <h3 class="h3">{{obj.articleName}}</h3>
         <div class="title">
             <span>
                 <label>发布时间：</label>
@@ -12,7 +12,7 @@
             </span>
             <span>
                 <label>来源：</label>
-                <a href="javascript:;">{{obj.articleLink}}</a>   
+                <a target="_blank" :href="obj.articleLink">{{obj.articleLink}}</a>   
             </span>
             <span>
                 <label>阅读：</label>
@@ -49,7 +49,7 @@
             <p class="p">欢迎评论:</p>
             <div v-if="obj3 && obj3.length>0" v-for="item in obj3" class="item clearfix">
                 <div class="clearfix">
-                    <img v-if="item.imgUrl.imgUrl" class="img" :src="url+item.imgUrl.imgUrl" width="50" height="50" alt="">
+                    <img v-if="item.imgUrl.imgUrl" class="img" :src="urlImg+item.imgUrl.imgUrl" width="50" height="50" alt="">
                     <img  v-if="!item.imgUrl.imgUrl" class="img" src="./2011713195450617.jpg" width="50" height="50" alt="">
                     <div class="comment_right">
                         <span v-if="item.from" class="name">{{item.from.userName}}</span>
@@ -72,7 +72,7 @@
                 
                 <div v-if="item.reply && item.reply.length > 0" v-for="(replyItem, index) in item.reply" style="width:660px;margin-left:60px;margin-top:20px" class="clearfix">
                     <div class="clearfix">
-                        <img v-if="replyItem.imgUrl.imgUrl" class="img" :src="url+replyItem.imgUrl.imgUrl" width="50" height="50" alt="">
+                        <img v-if="replyItem.imgUrl.imgUrl" class="img" :src="urlImg+replyItem.imgUrl.imgUrl" width="50" height="50" alt="">
                         <img  v-if="!replyItem.imgUrl.imgUrl" class="img" src="./2011713195450617.jpg" width="50" height="50" alt="">
                         <div style="width:600px" class="comment_right">
                             <span class="name">{{replyItem.from.userName}}&nbsp;&nbsp;回复&nbsp;&nbsp;{{replyItem.to.userName}}</span>
@@ -106,13 +106,13 @@
 </template>
 
 <script>
-let url = 'http://localhost:3006/';
 import { formatDate } from '../../assets/js/date';
 export default {
     name: 'articleDatile',
     data () {
         return {
-            url:'http://localhost:9090/static/',
+            url:'',
+            urlImg: '',
             userName1: '',
             userName2: '',
             userId1: '',
@@ -142,7 +142,7 @@ export default {
         //文章详细
         initData(id) {
             let articleId = id || this.comment.article;
-            this.$http.post(url + 'api/articleDatile', {id:articleId}).then(res => {
+            this.$http.post(this.url + 'api/articleDatile', {id:articleId}).then(res => {
                 let obj = res.body;
                 console.log('文章详细',obj)
                 if (obj.error_code == "Y10000") {
@@ -171,7 +171,7 @@ export default {
             this.comment.imgUrl = this.userId1 || this.userId2;
             console.log(this.comment.imgUrl)
             let jsonParams = JSON.stringify(this.comment)
-            this.$http.post(url + 'api/commentSave', {comment:jsonParams}).then(res => {
+            this.$http.post(this.url + 'api/commentSave', {comment:jsonParams}).then(res => {
                 let obj = res.body;
                 if (obj.error_code == "Y10000") {
                     this.initData(obj.datas.article);
@@ -204,6 +204,9 @@ export default {
         }
     },
     created() {
+        this.url = this.global_url.global_url;
+        this.urlImg = this.global_url.global_url_img + 'static/';
+
         this.initArticleId();
         this.initData();
 
@@ -227,7 +230,7 @@ export default {
     .articleDatile {
         padding: 20px 0;
     }
-    .articleDatile h3{
+    .articleDatile .h3{
         text-align: center;
         margin-bottom: 20px
     }

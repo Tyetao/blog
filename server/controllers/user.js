@@ -69,14 +69,14 @@ exports.signin = function(req, res) {
                 res.json({
                     error_code: "Y10001",
                     data: null,
-                    msg: "用户名或密码错误"
+                    msg: "信息有误"
                 })
             }
         } else {
             res.json({
                 error_code: "Y10001",
                 data: null,
-                msg: "用户名或密码错误"
+                msg: "户名不存在"
             })
         }
     });

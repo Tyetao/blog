@@ -53,11 +53,11 @@
 
 <script>
 import { commonEmit } from '../../assets/js/common';
-let url = 'http://localhost:3006/';
 export default {
     name: 'aside',
     data () {
         return {
+            url: '',
             obj: '',
             obj1: '',
             obj2: ''
@@ -65,7 +65,7 @@ export default {
     },
     methods: {
         articleClassify() {
-            this.$http.get(url+'api/articleClassify').then( res => {
+            this.$http.get(this.url+'api/articleClassify').then( res => {
                 let obj = res.body;
                 console.log(obj)
                 if (obj.error_code == "Y10000") {
@@ -76,7 +76,7 @@ export default {
             })
         },
         recentArticle(){
-            this.$http.get(url+'api/recentArticle').then( res => {
+            this.$http.get(this.url+'api/recentArticle').then( res => {
                 let obj = res.body;
                 if (obj.error_code == "Y10000") {
                     this.obj = obj.datas;
@@ -98,7 +98,7 @@ export default {
             commonEmit.$emit('getArticle',query,1);
         },
         getClickRate() {
-            this.$http.get(url+'api/clickRate').then( res => {
+            this.$http.get(this.url+'api/clickRate').then( res => {
                 let obj = res.body;
                 if (obj.error_code == "Y10000") {
                     this.obj1 = obj.datas;
@@ -109,6 +109,7 @@ export default {
         }
     },
     created(){
+        this.url = this.global_url.global_url;
         this.recentArticle();
         this.articleClassify();
         this.getClickRate();

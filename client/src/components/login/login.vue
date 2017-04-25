@@ -56,11 +56,11 @@
 </template>
 
 <script>
-	let url = 'http://localhost:3006/';
 	export default {
 		name: 'login',
 		data() {
 			return {
+				url: '',
 				signin: {
 					userName: '',
 					password: '',
@@ -77,7 +77,7 @@
 			signinF() {
 				console.log(JSON.stringify(this.signin))
 
-				this.$http.post(url + 'api/signin', this.signin).then( res => {
+				this.$http.post(this.url + 'api/signin', this.signin).then( res => {
 					let obj = res.body;
 					console.log(obj)
 					if (obj.error_code == "Y10001") {
@@ -115,7 +115,7 @@
 					return;
 				}
 
-				this.$http.post(url + 'api/signup', {"signup":signup}).then( res => {
+				this.$http.post(this.url + 'api/signup', {"signup":signup}).then( res => {
 					let obj = res.body;
 					if (obj.error_code == "Y10001") {
 						alert(obj.msg)
@@ -131,6 +131,8 @@
 			}
 		},
 		created(){
+			this.url = this.global_url.global_url;
+
 			let userName = localStorage.getItem('userName');
 			if (userName) {
 				this.signin.remember = true;
