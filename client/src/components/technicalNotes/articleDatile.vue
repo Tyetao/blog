@@ -20,7 +20,7 @@
             </span>
         </div>
         <div class="content">
-            <article v-html="obj.content">
+            <article v-html="obj.content"  class="markdown-body">
             </article>
         </div>
         <p class="contentPrve">上一篇
@@ -335,5 +335,20 @@ export default {
         border: none;
         resize: none;
         box-sizing: border-box;
+    }
+    .markdown-body pre.ql-syntax{
+        padding: 16px;
+        overflow: auto;
+        font-size: 85%;
+        line-height: 1.45;
+        background-color: #fff;
+        border-radius: 3px;
+        margin: 8px 0;
+    }
+    .markdown-body ul li {
+        list-style: disc;
+    }
+    .markdown-body ol li{
+        list-style: decimal;
     }
 </style>

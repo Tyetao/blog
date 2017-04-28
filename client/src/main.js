@@ -5,12 +5,15 @@ import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
 import $ from 'jquery'
+import QuillEditor from 'vue-quill-editor';
 
 import './assets/css/main.css'
 import 'animate.css'
+import 'github-markdown-css';
 import Global_ from './assets/js/global.js'
 
 Vue.use(VueResource)
+Vue.use(QuillEditor)
 
 Vue.config.productionTip = false;
 Vue.prototype.global_url = Global_;
